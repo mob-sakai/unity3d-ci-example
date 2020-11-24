@@ -42,10 +42,9 @@ jobs:
         id: activation
         run: |
           git clone ${{ env.ULF_REPO }} .ulfs
-          echo hogehoge!!!
-          UNITY_LICENSE=`cat .ulfs/Unity_v${{ matrix.unityVersion }}.ulf | sed 's/^ *//' | tr -d '\n'`
-          echo hogehoge!!!
-          echo "UNITY_LICENSE=\"$UNITY_LICENSE\"" >> $GITHUB_ENV
+          ULF_FILE=.ulfs/Unity_v${{ matrix.unityVersion }}.ulf
+          UNITY_LICENSE=`cat $ULF_FILE | sed 's/^ *//' | tr -d '\n'`
+          echo "UNITY_LICENSE=$UNITY_LICENSE" >> $GITHUB_ENV
         env:
           ULF_REPO: ${{ secrets.ULF_REPO }}
 
