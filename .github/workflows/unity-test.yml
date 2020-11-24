@@ -41,7 +41,7 @@ jobs:
       - name: Activate Unity Editor
         id: activation
         run: |
-          git clone ${ULF_REPO} .ulfs
+          git clone ${{ env.ULF_REPO }} .ulfs
           echo "UNITY_LICENSE=`cat .ulfs/Unity_v${{ matrix.unityVersion }}.ulf`" >> $GITHUB_ENV
         env:
           ULF_REPO: ${{ secrets.ULF_REPO }}
@@ -55,12 +55,26 @@ jobs:
           restore-keys: |
             Library-${{ matrix.projectPath }}-${{ matrix.unityVersion }}-
 
-      - uses: webbertakken/unity-builder@v2.0-aplha-5
+      # - uses: webbertakken/unity-builder@v2.0-aplha-5
+      #   with:
+      #     projectPath: ${{ matrix.projectPath }}
+      #     unityVersion: ${{ matrix.unityVersion }}
+      #     targetPlatform: ${{ matrix.targetPlatform }}
+
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     path: build
+
+      - uses: webbertakken/unity-test-runner@7d26e264b92f726b5f8a207c10a96e0ba608a736
+        id: tests
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
+          customParameters: "-enableCodeCoverage"
 
       - uses: actions/upload-artifact@v2
         with:
-          path: build
+          name: ${{ matrix.unityVersion }}-${{ matrix.targetPlatform }}
+          path: |
+            artifacts/**/TestResults-*.xml
+            CodeCoverage/**/TestCoverageResults_*.xml
