@@ -67,7 +67,7 @@ jobs:
       #   with:
       #     path: build
 
-      - uses: webbertakken/unity-test-runner@v1.7
+      - uses: webbertakken/unity-test-runner@c4e44617e2d30edebf39415370dc1485f90ee37e
         id: tests
         with:
           projectPath: ${{ matrix.projectPath }}
