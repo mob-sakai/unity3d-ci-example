@@ -21,7 +21,7 @@ jobs:
           # - path/to/your/project
           - .
         unityVersion:
-          - 2020.1.14f1
+          - 2020.1.12f1
         targetPlatform:
           # - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           # - StandaloneWindows # Build a Windows standalone.
@@ -57,7 +57,7 @@ jobs:
           restore-keys: |
             Library-${{ matrix.projectPath }}-${{ matrix.unityVersion }}-
 
-      # - uses: webbertakken/unity-builder@v2.0-aplha-5
+      # - uses: webbertakken/unity-builder@v1
       #   with:
       #     projectPath: ${{ matrix.projectPath }}
       #     unityVersion: ${{ matrix.unityVersion }}
@@ -67,7 +67,7 @@ jobs:
       #   with:
       #     path: build
 
-      - uses: webbertakken/unity-test-runner@7d26e264b92f726b5f8a207c10a96e0ba608a736
+      - uses: webbertakken/unity-test-runner@v1
         id: tests
         with:
           projectPath: ${{ matrix.projectPath }}
