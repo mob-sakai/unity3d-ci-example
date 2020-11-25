@@ -37,17 +37,6 @@ jobs:
           # - Switch # Build a Nintendo Switch player.
 
     steps:
-      # Activate Unity Editor
-      - name: Activate Unity Editor
-        id: activation
-        run: |
-          git clone ${{ env.ULF_REPO }} .ulfs
-          ULF_FILE=.ulfs/Unity_v${{ matrix.unityVersion }}.ulf
-          UNITY_LICENSE=`cat $ULF_FILE | sed 's/^ *//' | tr -d '\n'`
-          echo "UNITY_LICENSE=$UNITY_LICENSE" >> $GITHUB_ENV
-        env:
-          ULF_REPO: ${{ secrets.ULF_REPO }}
-
       - uses: actions/checkout@v2
 
       - uses: actions/cache@v1.1.0
@@ -56,6 +45,11 @@ jobs:
           key: Library-${{ matrix.projectPath }}-${{ matrix.unityVersion }}-${{ matrix.targetPlatform }}
           restore-keys: |
             Library-${{ matrix.projectPath }}-${{ matrix.unityVersion }}-
+
+      # Clone ulf repo
+      - run: git clone ${{ env.ULF_REPO }} .ulfs
+        env:
+          ULF_REPO: ${{ secrets.ULF_REPO }}
 
       # - uses: webbertakken/unity-builder@v1.5
       #   with:
@@ -67,12 +61,14 @@ jobs:
       #   with:
       #     path: build
 
-      - uses: webbertakken/unity-test-runner@c4e44617e2d30edebf39415370dc1485f90ee37e
+      - uses: webbertakken/unity-test-runner@7d26e264b92f726b5f8a207c10a96e0ba608a736
         id: tests
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           customParameters: "-enableCodeCoverage"
+        env:
+          UNITY_LICENSE_FILE: .ulfs/Unity_v${{ matrix.unityVersion }}.ulf
 
       - uses: actions/upload-artifact@v2
         with:
