@@ -66,7 +66,7 @@ jobs:
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
-          customParameters: "-enableCodeCoverage"
+          customParameters: "-nographics -enableCodeCoverage"
         env:
           UNITY_LICENSE_FILE: .ulfs/Unity_v${{ matrix.unityVersion }}.ulf
 
